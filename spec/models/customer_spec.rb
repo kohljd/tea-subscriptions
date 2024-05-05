@@ -15,6 +15,6 @@ RSpec.describe Customer, type: :model do
   end
 
   describe "relationships" do
-    xit { should have_many :subscriptions }
+    it { should have_many :subscriptions }
   end
 end
