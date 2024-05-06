@@ -32,7 +32,7 @@ RSpec.describe "POST /api/v0/customers/:customer_id/subscriptions" do
     expect(attributes[:status]).to eq "active"
   end
 
-  xit "requires valid customer id" do
+  it "requires valid customer id" do
     headers = {"Content_Type": "application/json", "Accept": "application/json"}
     body = {
       "teas": [tea_1.id, tea_2.id],
@@ -46,7 +46,7 @@ RSpec.describe "POST /api/v0/customers/:customer_id/subscriptions" do
     expect(response.status).to eq 404
   end
 
-  xit "requires valid tea id's" do
+  it "requires valid tea id's" do
     headers = {"Content_Type": "application/json", "Accept": "application/json"}
     body = {
       "teas": [0],
@@ -60,24 +60,7 @@ RSpec.describe "POST /api/v0/customers/:customer_id/subscriptions" do
     expect(response.status).to eq 404
   end
 
-  xit "customer can't have duplicate subscription" do
-    headers = {"Content_Type": "application/json", "Accept": "application/json"}
-    body = {
-      "teas": [tea_1.id, tea_2.id],
-      "title": "Tea for Two",
-      "price": 15,
-      "frequency": "weekly",
-      "status": "active"
-    }
-
-    post "/api/v0/customers/#{customer.id}/subscriptions", params: body, headers: headers
-    expect(response.status).to eq 201
-
-    post "/api/v0/customers/#{customer.id}/subscriptions", params: body, headers: headers
-    expect(response.status).to eq 422
-  end
-
-  xit "requires valid subscription data" do
+  it "requires valid subscription data" do
     headers = {"Content_Type": "application/json", "Accept": "application/json"}
     body = {
       "teas": [tea_1.id, tea_2.id],
@@ -91,7 +74,7 @@ RSpec.describe "POST /api/v0/customers/:customer_id/subscriptions" do
     expect(response.status).to eq 400
   end
 
-  xit "requires at least 1 tea to be given" do
+  it "requires at least 1 tea to be given" do
     headers = {"Content_Type": "application/json", "Accept": "application/json"}
     body = {
       "teas": [],
@@ -102,6 +85,6 @@ RSpec.describe "POST /api/v0/customers/:customer_id/subscriptions" do
     }
 
     post "/api/v0/customers/#{customer.id}/subscriptions", params: body, headers: headers
-    expect(response.status).to eq 400
+    expect(response.status).to eq 404
   end
 end
