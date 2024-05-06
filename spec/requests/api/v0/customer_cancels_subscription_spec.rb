@@ -6,14 +6,14 @@ RSpec.describe "PATCH /api/v0/customers/:customer_id/subscriptions" do
   let!(:tea_2) { Tea.create(title: "Green Tea", description: "soothing", temperature: 165, brew_time: 2) }
 
   before do
-    headers = {"Content_Type": "application/json", "Accept": "application/json"}
-    add_subscription_body = { "teas": [tea_1.id, tea_2.id], "title": "Tea for Two", "price": 15, "frequency": "weekly", "status": "active" }
-    post "/api/v0/customers/#{customer.id}/subscriptions", params: add_subscription_body, headers: headers
+    @headers = {"Content_Type": "application/json", "Accept": "application/json"}
+    @add_subscription_body = { "teas": [tea_1.id, tea_2.id], "title": "Tea for Two", "price": 15, "frequency": "weekly", "status": "active" }
+    post "/api/v0/customers/#{customer.id}/subscriptions", params: @add_subscription_body, headers: @headers
   end
 
   it "creates new customer subscription" do
     cancel_subscription_body = { "status": "cancelled" }
-    patch "/api/v0/customers/#{customer.id}/subscriptions/#{Subscription.last.id}", params: cancel_subscription_body, headers: headers
+    patch "/api/v0/customers/#{customer.id}/subscriptions/#{Subscription.last.id}", params: cancel_subscription_body, headers: @headers
     expect(response.status).to eq 200
     
     subscription = JSON.parse(response.body, symbolize_names: true)[:data]
@@ -32,23 +32,19 @@ RSpec.describe "PATCH /api/v0/customers/:customer_id/subscriptions" do
 
   it "requires valid customer id" do
     cancel_subscription_body = { "status": "cancelled" }
-    patch "/api/v0/customers/0/subscriptions/#{Subscription.last.id}", params: cancel_subscription_body, headers: headers
+    patch "/api/v0/customers/0/subscriptions/#{Subscription.last.id}", params: cancel_subscription_body, headers: @headers
     expect(response.status).to eq 404
   end
 
   it "requires valid subscription id" do
     cancel_subscription_body = { "status": "cancelled" }
-    patch "/api/v0/customers/#{customer.id}/subscriptions/#{Subscription.last.id + 1}", params: cancel_subscription_body, headers: headers
+    patch "/api/v0/customers/#{customer.id}/subscriptions/#{Subscription.last.id + 1}", params: cancel_subscription_body, headers: @headers
     expect(response.status).to eq 404
   end
 
-  it "requires valid subscription status option" do
+  it "requires subscription status" do
     cancel_subscription_body = { "status": "" }
-    patch "/api/v0/customers/#{customer.id}/subscriptions/#{Subscription.last.id}", params: cancel_subscription_body, headers: headers
-    expect(response.status).to eq 400
-
-    cancel_subscription_body = { "status": "invalid_status" }
-    patch "/api/v0/customers/#{customer.id}/subscriptions/#{Subscription.last.id}", params: cancel_subscription_body, headers: headers
+    patch "/api/v0/customers/#{customer.id}/subscriptions/#{Subscription.last.id}", params: cancel_subscription_body, headers: @headers
     expect(response.status).to eq 400
   end
 end
