@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "PATCH /api/v0/customers/:customer_id/subscriptions" do
+RSpec.describe "PATCH /api/v0/customers/:customer_id/subscriptions/:id" do
   let!(:customer) { Customer.create(first_name: "John", last_name: "Doe", email: "email@email.com", address: "123 4th Ave, Indianapolis, IN, 46259") }
   let!(:tea_1) { Tea.create(title: "Earl Grey", description: "great in the morning", temperature: 195, brew_time: 3.5) }
   let!(:tea_2) { Tea.create(title: "Green Tea", description: "soothing", temperature: 165, brew_time: 2) }
@@ -11,7 +11,7 @@ RSpec.describe "PATCH /api/v0/customers/:customer_id/subscriptions" do
     post "/api/v0/customers/#{customer.id}/subscriptions", params: @add_subscription_body, headers: @headers
   end
 
-  it "creates new customer subscription" do
+  it "cancels customer subscription" do
     cancel_subscription_body = { "status": "cancelled" }
     patch "/api/v0/customers/#{customer.id}/subscriptions/#{Subscription.last.id}", params: cancel_subscription_body, headers: @headers
     expect(response.status).to eq 200
