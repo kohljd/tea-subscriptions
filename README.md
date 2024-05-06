@@ -1,25 +1,12 @@
-# README
+# Tea Subscriptions
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## Table of Contents
 
-Things you may want to cover:
+[Summary](#summary)<br>
+[Setup Instructions](#setup-instructions)<br>
+[Testing Instructions](#testing-instructions)<br>
+[Endpoints](#endpoints)
 
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
 ## Summary
 This project is a take-home prompt completed as part of Turing's Mod 3 $\rightarrow$ Mod 4 intermission work. The overall goal was to create a Rails API for a tea subscription service. Requirements included:
 - An endpoint to subscribe a customer to a tea subscription
@@ -36,7 +23,32 @@ A full description with the entire prompt may be read [here](https://mod4.turing
 4. Run `bundle install` to install gems used for this project
 5. Setup the database migration and seed file by running `rails db:{drop,create,migrate,seed}`
 
-## Testing
+### Local Server
+To start a local rails server run
+```shell
+rails server
+```
+
+Endpoints may then be utilized in a browser by navigating to
+```http
+http://localhost:3000/
+```
+And adding the desired api endpoint path to the end. A full list of options may be found in this README's [endpoints section](#endpoints).
+
+<details>
+<summary>Local Host Endpoint URL Example</summary>
+
+```http
+http://localhost:3000/api/v0/customers/1/subscriptions
+```
+</details><br>
+
+To stop the local rails server use `Ctrl` + `C` in the open terminal.
+
+>Note: If preferred, you can also use [Postman](https://www.postman.com/) rather than the browser's localhost, but you will still need to startup the local server using the `rails server` command.
+
+
+## Testing Instructions
 
 Rspec was used for testing. Official documentation [here](https://rspec.info/documentation/). This project ccurrently uses rspec-rails v6.1 for and rspec-core v3.13.
 
