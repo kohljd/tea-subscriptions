@@ -21,6 +21,15 @@ Things you may want to cover:
 
 * Deployment instructions
 
+
+## Setup Instructions
+
+1. Fork and/or clone this repo from GitHub
+2. In terminal, run `git clone <ssh or https path>`
+3. Navigate into the cloned project by running `cd tea-subscriptions`
+4. Run `bundle install` to install gems used for this project
+5. Setup the database migration and seed file by running `rails db:{drop,create,migrate,seed}`
+
 ## Testing
 
 Rspec was used for testing. Official documentation [here](https://rspec.info/documentation/). This project ccurrently uses rspec-rails v6.1 for and rspec-core v3.13.
