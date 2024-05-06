@@ -20,7 +20,13 @@ Things you may want to cover:
 * Services (job queues, cache servers, search engines, etc.)
 
 * Deployment instructions
+## Summary
+This project is a take-home prompt completed as part of Turing's Mod 3 $\rightarrow$ Mod 4 intermission work. The overall goal was to create a Rails API for a tea subscription service. Requirements included:
+- An endpoint to subscribe a customer to a tea subscription
+- An endpoint to cancel a customer’s tea subscription
+- An endpoint to see all of a customer’s subsciptions (active and cancelled)
 
+A full description with the entire prompt may be read [here](https://mod4.turing.edu/projects/take_home/take_home_be) on Turing's site.
 
 ## Setup Instructions
 
