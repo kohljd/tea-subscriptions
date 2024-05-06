@@ -8,24 +8,26 @@ RSpec.describe "POST /api/v0/customers/:customer_id/subscriptions" do
   it "creates new customer subscription" do
     headers = {"Content_Type": "application/json", "Accept": "application/json"}
     body = {
-      "teas": [tea.id, tea_2.id],
+      "teas": [tea_1.id, tea_2.id],
       "title": "Tea for Two",
       "price": 15,
-      "frequency": "weekly"
+      "frequency": "weekly",
+      "status": "active"
     }
 
     post "/api/v0/customers/#{customer.id}/subscriptions", params: body, headers: headers
     expect(response.status).to eq 201
-
-    subscription = JSON.parse(response.body, headers: true)[:data]
-    teas = JSON.parse(response.body, headers: true)[:data][:relationships][:teas][:data]
+    
+    subscription = JSON.parse(response.body, symbolize_names: true)[:data]
+    teas = JSON.parse(response.body, symbolize_names: true)[:data][:relationships][:teas][:data]
     expect(subscription[:type]).to eq "subscription"
     expect(teas).to be_an Array
-    expect(teas).to all(include (:id, type: "tea"))
+    expect(teas.size).to eq 2
+    expect(teas).to all(include("type": "tea"))
 
     attributes = subscription[:attributes]
     expect(attributes[:title]).to eq "Tea for Two"
-    expect(attributes[:price]).to eq 15
+    expect(attributes[:price]).to eq 15.0
     expect(attributes[:frequency]).to eq "weekly"
     expect(attributes[:status]).to eq "active"
   end
@@ -33,10 +35,11 @@ RSpec.describe "POST /api/v0/customers/:customer_id/subscriptions" do
   xit "requires valid customer id" do
     headers = {"Content_Type": "application/json", "Accept": "application/json"}
     body = {
-      "teas": [tea.id, tea_2.id],
+      "teas": [tea_1.id, tea_2.id],
       "title": "Tea for Two",
       "price": 15,
-      "frequency": "weekly"
+      "frequency": "weekly",
+      "status": "active"
     }
 
     post "/api/v0/customers/0/subscriptions", params: body, headers: headers
@@ -49,7 +52,8 @@ RSpec.describe "POST /api/v0/customers/:customer_id/subscriptions" do
       "teas": [0],
       "title": "Tea for Two",
       "price": 15,
-      "frequency": "weekly"
+      "frequency": "weekly",
+      "status": "active"
     }
 
     post "/api/v0/customers/#{customer.id}/subscriptions", params: body, headers: headers
@@ -59,10 +63,11 @@ RSpec.describe "POST /api/v0/customers/:customer_id/subscriptions" do
   xit "customer can't have duplicate subscription" do
     headers = {"Content_Type": "application/json", "Accept": "application/json"}
     body = {
-      "teas": [tea.id, tea_2.id],
+      "teas": [tea_1.id, tea_2.id],
       "title": "Tea for Two",
       "price": 15,
-      "frequency": "weekly"
+      "frequency": "weekly",
+      "status": "active"
     }
 
     post "/api/v0/customers/#{customer.id}/subscriptions", params: body, headers: headers
@@ -72,13 +77,14 @@ RSpec.describe "POST /api/v0/customers/:customer_id/subscriptions" do
     expect(response.status).to eq 422
   end
 
-  xit "requires valid subscription data"
+  xit "requires valid subscription data" do
     headers = {"Content_Type": "application/json", "Accept": "application/json"}
     body = {
-      "teas": [tea.id, tea_2.id],
+      "teas": [tea_1.id, tea_2.id],
       "title": "",
       "price": "",
-      "frequency": ""
+      "frequency": "",
+      "status": ""
     }
 
     post "/api/v0/customers/#{customer.id}/subscriptions", params: body, headers: headers
@@ -91,7 +97,8 @@ RSpec.describe "POST /api/v0/customers/:customer_id/subscriptions" do
       "teas": [],
       "title": "Tea for Two",
       "price": 15,
-      "frequency": "weekly"
+      "frequency": "weekly",
+      "status": "active"
     }
 
     post "/api/v0/customers/#{customer.id}/subscriptions", params: body, headers: headers
